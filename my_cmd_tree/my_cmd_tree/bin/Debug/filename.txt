@@ -1,0 +1,7 @@
+.\filename
+.\filename.txt
+.\my_cmd_tree.exe
+.\my_cmd_tree.pdb
+.\my_cmd_tree.vshost.exe
+.\my_cmd_tree.vshost.exe.manifest
+.\新建文件夹\新建文本文档.txt

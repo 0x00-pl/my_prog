@@ -1,0 +1,9 @@
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\ResolveAssemblyReference.cache
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.get_redex.resources
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.Properties.Resources.resources
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.csproj.GenerateResource.Cache
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\bin\Debug\use_regex_get_index.exe
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\bin\Debug\use_regex_get_index.pdb
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.exe
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.pdb
+E:\360Downloads\新建文件夹\use_regex_get_index\use_regex_get_index\obj\Debug\use_regex_get_index.input_text.resources

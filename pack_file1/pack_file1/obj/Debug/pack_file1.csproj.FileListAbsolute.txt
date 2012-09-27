@@ -1,0 +1,5 @@
+E:\360Downloads\新建文件夹\pack_file1\pack_file1\obj\Debug\ResolveAssemblyReference.cache
+E:\360Downloads\新建文件夹\pack_file1\pack_file1\bin\Debug\pack_file1.exe
+E:\360Downloads\新建文件夹\pack_file1\pack_file1\bin\Debug\pack_file1.pdb
+E:\360Downloads\新建文件夹\pack_file1\pack_file1\obj\Debug\pack_file1.exe
+E:\360Downloads\新建文件夹\pack_file1\pack_file1\obj\Debug\pack_file1.pdb

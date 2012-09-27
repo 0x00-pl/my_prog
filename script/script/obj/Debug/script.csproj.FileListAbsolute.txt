@@ -1,0 +1,8 @@
+E:\360Downloads\新建文件夹\script\script\obj\Debug\ResolveAssemblyReference.cache
+E:\360Downloads\新建文件夹\script\script\obj\Debug\script.csproj.GenerateResource.Cache
+E:\360Downloads\新建文件夹\script\script\bin\Debug\script.exe
+E:\360Downloads\新建文件夹\script\script\bin\Debug\script.pdb
+E:\360Downloads\新建文件夹\script\script\obj\Debug\script.exe
+E:\360Downloads\新建文件夹\script\script\obj\Debug\script.pdb
+E:\360Downloads\新建文件夹\script\script\obj\Debug\pl.Properties.Resources.resources
+E:\360Downloads\新建文件夹\script\script\obj\Debug\pl.Form1.resources
