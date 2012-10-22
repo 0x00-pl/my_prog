@@ -26,5 +26,8 @@
     <ClInclude Include="bloc_graph.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="bloc_opt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
