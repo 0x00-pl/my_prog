@@ -64,6 +64,7 @@
     <ClCompile Include="testfile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="makedll.h" />
     <ClInclude Include="plstm.h" />
     <ClInclude Include="section.h" />
     <ClInclude Include="tools.h" />

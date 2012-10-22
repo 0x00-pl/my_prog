@@ -32,5 +32,8 @@
     <ClInclude Include="tools.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="makedll.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
