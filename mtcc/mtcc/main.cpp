@@ -1,5 +1,7 @@
 #include"parser.h"
 #include"bloc_graph.h"
+#include"bloc_opt.h"
+#include"show_mid_code.h"
 
 char* testprog(){
 	return
@@ -29,5 +31,9 @@ void main(){
 	//}
 
 	auto prog_code= genopt(prog);
+	map<string,int> global_const;
+	string tcd1= show_mid_code(prog_code);
+	auto const_opt_ed= const_opt(prog_code, global_const);
+	string tcd2= show_mid_code(const_opt_ed);
 	
 }

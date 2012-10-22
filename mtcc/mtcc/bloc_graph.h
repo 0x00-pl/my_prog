@@ -25,6 +25,16 @@ public:
 	bool is_val;
 	int val;
 	string name;
+	
+	string to_string(){
+		if(bad) return "bad-symbol";
+		if(is_val){
+			stringstream ss;
+			ss<<val;
+			return ss.str();
+		}
+		return name;
+	}
 };
 
 string gen_name(){
@@ -76,6 +86,20 @@ public:
 			}
 			ret+= s2.name;
 			break;
+		case read:
+			ret+= "read ";
+			ret+= s0.name;
+			break;
+		case write:
+			ret+= "write ";	
+			if(s0.is_val){
+				stringstream ss;
+				ss<<s0.val;
+				ret+= ss.str();
+			}else{
+				ret+= s0.name;
+			}
+			break;
 		default:
 			ret+= "???";
 		}
@@ -89,7 +113,7 @@ public:
 		if_stmt,
 		repeat_stmt
 	}type;
-	symbol test_symble;
+	symbol test_symbol;
 	vector<mid_code> code_true;
 	vector<mid_code> code_false;
 	vector<mid_block> block_item;
@@ -111,7 +135,10 @@ vector<mid_code> genoptexp(code_tree_node& bloc, symbol dest){
 		temp_code.type= mid_code::set;
 		temp_code.op= mid_code::none;
 		temp_code.s0= dest;
-		temp_code.s1= symbol(atoi(bloc.tkn.text.c_str()));
+		if(bloc.tkn.type==token::number)
+			temp_code.s1= symbol(atoi(bloc.tkn.text.c_str()));
+		else
+			temp_code.s1= symbol(bloc.tkn.text);
 		temp_code.s2.bad= true;
 		ret.push_back(temp_code);
 		return ret;
@@ -178,7 +205,7 @@ mid_block genopt(code_tree_node& bloc, int block_item_base=0){
 					ret.code_true.push_back(temp_code);
 
 					ret.block_item.push_back(genopt(*iter));
-					ret.block_item.back().test_symble= temp_for_test;
+					ret.block_item.back().test_symbol= temp_for_test;
 				}
 				break;
 			case code_tree_node::repeat_stament:
@@ -274,7 +301,7 @@ mid_block genopt(code_tree_node& bloc, int block_item_base=0){
 				temp_code_vec.begin(), 
 				temp_code_vec.end()
 				);
-			ret.test_symble= exp_for_test;
+			ret.test_symbol= exp_for_test;
 		}
 		break;
 	}

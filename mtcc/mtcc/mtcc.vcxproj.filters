@@ -29,5 +29,8 @@
     <ClInclude Include="bloc_opt.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="show_mid_code.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
