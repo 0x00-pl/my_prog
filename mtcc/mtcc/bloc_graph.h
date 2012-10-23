@@ -75,16 +75,23 @@ public:
 			}else{
 				ret+= s1.name;
 			}
-			switch(op){
-			case none: break;
-			case lt: ret+= " < "; break;
-			case eq: ret+= " = "; break;
-			case plus: ret+= " + "; break;
-			case sub: ret+= " - "; break;
-			case mul: ret+= " * "; break;
-			default: ret+= "???";
+			if(op!=none){
+				switch(op){
+				case lt: ret+= " < "; break;
+				case eq: ret+= " = "; break;
+				case plus: ret+= " + "; break;
+				case sub: ret+= " - "; break;
+				case mul: ret+= " * "; break;
+				default: ret+= "???";
+				}
+				if(s2.is_val){
+					stringstream ss;
+					ss<<s2.val;
+					ret+= ss.str();
+				}else{
+					ret+= s2.name;
+				}
 			}
-			ret+= s2.name;
 			break;
 		case read:
 			ret+= "read ";

@@ -105,8 +105,7 @@ mid_block const_opt(mid_block bloc, map<string,int>& const_val){
 }
 
 
-vector<mid_code>&  
-	const_bloc_opt(
+vector<mid_code>& const_bloc_opt(
 	vector<mid_code>& block,
 	vector<mid_block>& block_item,
 	map<string,int>& const_val
@@ -133,41 +132,46 @@ vector<mid_code>&
 						}
 					}else{
 						int cs1,cs2,res;
+						bool can_be_count= true;
 						if(iter->s1.is_val){
 							cs1= iter->s1.val;
 						}else if(const_val.find(iter->s1.name)!=const_val.end()){
 							cs1= const_val[iter->s1.name];
+							iter->s1= symbol(cs1);
 						}else{
-							const_val.erase(iter->s0.name);
-							continue;
+							can_be_count= false;
 						}
 						if(iter->s2.is_val){
 							cs2= iter->s2.val;
 						}else if(const_val.find(iter->s2.name)!=const_val.end()){
 							cs2= const_val[iter->s2.name];
+							iter->s2= symbol(cs2);
 						}else{
+							can_be_count= false;
+						}
+						if(!can_be_count){
 							const_val.erase(iter->s0.name);
-							continue;
+						}else{
+							switch(iter->op){
+							case mid_code::lt:
+								res= cs1<cs2? 1: 0;
+								break;
+							case mid_code::eq:
+								res= cs1==cs2? 1: 0;
+								break;
+							case mid_code::plus:
+								res= cs1+cs2;
+								break;
+							case mid_code::sub:
+								res= cs1-cs2;
+								break;
+							case mid_code::mul:
+								res= cs1*cs2;
+								break;
+							}
+							iter->s1= symbol(res);
+							const_val[iter->s0.name]= iter->s1.val;
 						}
-						switch(iter->op){
-						case mid_code::lt:
-							res= cs1<cs2? 1: 0;
-							break;
-						case mid_code::eq:
-							res= cs1==cs2? 1: 0;
-							break;
-						case mid_code::plus:
-							res= cs1+cs2;
-							break;
-						case mid_code::sub:
-							res= cs1-cs2;
-							break;
-						case mid_code::mul:
-							res= cs1*cs2;
-							break;
-						}
-						iter->s1= symbol(res);
-						const_val[iter->s0.name]= iter->s1.val;
 					}
 					break;
 				case mid_code::read:

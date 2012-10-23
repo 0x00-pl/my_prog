@@ -1,14 +1,17 @@
+#include<Windows.h>
+#pragma comment(lib, "winmm.lib")
 #include"parser.h"
 #include"bloc_graph.h"
 #include"bloc_opt.h"
 #include"show_mid_code.h"
+
 
 char* testprog(){
 	return
 	"{ Sample program\n\
 	in TINY language\n\
 	}\n\
-	x:=4;{read x;} { input an integer }\n\
+	x:=100;{read x;} { input an integer }\n\
 	if 0 < x then { don't compute if x <= 0 }\n\
 	  fact := 1;\n\
 	  repeat\n\
@@ -20,6 +23,8 @@ char* testprog(){
 }
 
 void main(){
+	system("title PL");
+	auto start_time= timeGetTime();
 	auto toks= get_tokens(testprog());
 	auto prog= match_stmt_sequence(toks.begin(), toks.end());
 	auto prog_code= genopt(prog);
@@ -29,5 +34,9 @@ void main(){
 	string tcd2= show_mid_code(const_opt_ed);
 	auto required_opt_ed= flip_unrequired_opt(const_opt_ed);
 	string tcd3= show_mid_code(required_opt_ed);
-
+	
+	auto end_time= timeGetTime();
+	cout<<tcd3<<endl;
+	cout<<"using time: "<<end_time-start_time<<endl;
+	system("pause");
 }
