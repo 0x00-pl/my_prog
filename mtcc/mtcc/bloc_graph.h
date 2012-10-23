@@ -108,16 +108,17 @@ public:
 };
 class mid_block{
 public:
+	mid_block(){required= false;}
 	enum{
 		seqence,
 		if_stmt,
 		repeat_stmt
 	}type;
+	bool required;
 	symbol test_symbol;
 	vector<mid_code> code_true;
 	vector<mid_code> code_false;
 	vector<mid_block> block_item;
-	vector<symbol> required_symbol;
 };
 
 //

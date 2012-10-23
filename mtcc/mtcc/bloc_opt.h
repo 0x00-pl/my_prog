@@ -1,5 +1,6 @@
 #pragma once
 #include<map>
+#include<set>
 using namespace std;
 #include"bloc_graph.h"
 
@@ -182,4 +183,160 @@ vector<mid_code>&
 				}
 		}
 		return block;
+}
+
+bool required_bloc_opt(
+	vector<mid_code>& block,
+	vector<mid_block>& block_item,
+	set<string>& required_symbol
+	);
+
+mid_block required_opt(mid_block bloc, set<string>& required_symbol){
+	switch(bloc.type){
+	case mid_block::seqence:
+		bloc.required= required_bloc_opt(bloc.code_true, bloc.block_item, required_symbol);
+		break;
+	case mid_block::if_stmt:
+		if(bloc.test_symbol.is_val){
+			bloc.required= required_bloc_opt(
+				bloc.test_symbol.val!=0? bloc.code_true: bloc.code_false,
+				bloc.block_item, required_symbol);
+		}else{
+			set<string> required_symbol_true(required_symbol.begin(), required_symbol.end());
+			set<string> required_symbol_false(required_symbol.begin(), required_symbol.end());
+
+			bloc.required= required_bloc_opt(bloc.code_true, bloc.block_item, required_symbol_true);
+			bloc.required|= required_bloc_opt(bloc.code_false, bloc.block_item, required_symbol_false);
+
+			if(bloc.required){
+				required_symbol= move(required_symbol_true);
+				required_symbol.insert(required_symbol_false.begin(), required_symbol_false.end());
+				required_symbol.insert(bloc.test_symbol.name);
+			}
+		}
+		break;
+	case mid_block::repeat_stmt:
+		mid_block test_block= bloc;
+		set<string> test_required_symbol(required_symbol.begin(), required_symbol.end());
+		if(required_bloc_opt(test_block.code_true, test_block.block_item, test_required_symbol)){
+			bloc.required= true;
+			if(!bloc.test_symbol.is_val) 
+				required_symbol.insert(bloc.test_symbol.name);
+			required_bloc_opt(bloc.code_true, bloc.block_item, required_symbol);
+		}
+		break;
+	}
+	return move(bloc);
+}
+
+bool required_bloc_opt(
+	vector<mid_code>& block,
+	vector<mid_block>& block_item,
+	set<string>& required_symbol
+	){
+		bool required_flag= false;
+		for(auto iter=block.rbegin();
+			iter!=block.rend();
+			++iter
+			){
+				switch(iter->type){
+				case mid_code::bloc:
+					block_item[iter->s0.val]= 
+						required_opt(block_item[iter->s0.val], required_symbol);
+					iter->required= block_item[iter->s0.val].required;
+					required_flag|= iter->required;
+					break;
+				case mid_code::set:
+					if(required_symbol.find(iter->s0.name)==required_symbol.end())
+						break;
+					if(!iter->s1.is_val && iter->s0.name==iter->s1.name){
+						bool brk= false;
+						switch(iter->op){
+						case mid_code::plus:
+						case mid_code::sub:
+							if(iter->s2.is_val && iter->s2.val==0)
+								brk= true;
+							break;
+						case mid_code::mul:
+							if(iter->s2.is_val && iter->s2.val==1)
+								brk= true;
+							break;
+						}
+						if(brk) break;
+					}
+					if(!iter->s2.is_val && iter->s0.name==iter->s2.name){
+						bool brk= false;
+						switch(iter->op){
+						case mid_code::plus:
+						case mid_code::sub:
+							if(iter->s1.is_val && iter->s1.val==0)
+								brk= true;
+							break;
+						case mid_code::mul:
+							if(iter->s1.is_val && iter->s1.val==1)
+								brk= true;
+							break;
+						}
+						if(brk) break;
+					}
+					required_flag= true;
+					iter->required= true;
+					required_symbol.erase(iter->s0.name);
+					if(!iter->s1.is_val) required_symbol.insert(iter->s1.name);
+					if(iter->op!=mid_code::none){
+						if(!iter->s2.is_val) required_symbol.insert(iter->s2.name);
+					}
+					break;
+				case mid_code::read:
+					required_flag= true;
+					iter->required= true;
+					required_symbol.erase(iter->s0.name);
+					break;
+				case mid_code::write:
+					required_flag= true;
+					iter->required= true;
+					if(!iter->s0.is_val) required_symbol.insert(iter->s0.name);
+					break;
+				}
+		}
+		return required_flag;
+}
+
+void flip_unrequired_opt_iter(
+	vector<mid_code>& dest, vector<mid_code>& src, 
+	vector<mid_block>& bloc_dest, vector<mid_block>& bloc_src
+	);
+mid_block _flip_unrequired(mid_block& bloc){
+	mid_block ret;
+	ret.type= bloc.type;
+	ret.required= bloc.required;
+	ret.test_symbol= bloc.test_symbol;
+	flip_unrequired_opt_iter(ret.code_true, bloc.code_true, ret.block_item, bloc.block_item);
+	flip_unrequired_opt_iter(ret.code_false, bloc.code_false, ret.block_item, bloc.block_item);
+	return ret;
+}
+
+void flip_unrequired_opt_iter(
+	vector<mid_code>& dest, vector<mid_code>& src, 
+	vector<mid_block>& bloc_dest, vector<mid_block>& bloc_src
+	){
+	for(auto iter=src.begin(); iter!=src.end(); ++iter){
+		if(iter->required){
+			if(iter->type!= mid_code::bloc){
+				dest.push_back(*iter);
+			}else{
+				mid_code temp_code= *iter;
+				temp_code.s0.val= bloc_dest.size();
+				dest.push_back(temp_code);
+				mid_block& temp_bloc_ref= _flip_unrequired(bloc_src[iter->s0.val]);
+				bloc_dest.push_back(temp_bloc_ref);
+			}
+		}
+	}
+}
+
+
+mid_block flip_unrequired_opt(mid_block& bloc){
+	mid_block& temp_bloc= required_opt(bloc, set<string>());
+	return _flip_unrequired(temp_bloc);
 }
