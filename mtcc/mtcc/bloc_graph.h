@@ -25,7 +25,14 @@ public:
 	bool is_val;
 	int val;
 	string name;
-	
+	bool operator!=(const symbol& o)const{
+		if(o.is_val!=is_val) return false;
+		if(is_val){
+			return o.val!=val;
+		}else{
+			return o.name!=name;
+		}
+	}
 	string to_string(){
 		if(bad) return "bad-symbol";
 		if(is_val){
@@ -62,6 +69,15 @@ public:
 	symbol s0;
 	symbol s1;
 	symbol s2;
+	bool operator!=(const mid_code& o)const{
+		if(o.type!=type || o.op!=op) return true;
+		if(o.s0!=s0) return true;
+		if(o.s1!=s1) return true;
+		if(op!=none){
+			if(o.s2!=s2) return true;
+		}
+		return false;
+	}
 	string to_string(){
 		string ret;
 		switch(type){

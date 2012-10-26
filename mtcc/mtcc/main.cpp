@@ -11,7 +11,7 @@ char* testprog(){
 	"{ Sample program\n\
 	in TINY language\n\
 	}\n\
-	x:=100;{read x;} { input an integer }\n\
+	read x; { input an integer }\n\
 	if 0 < x then { don't compute if x <= 0 }\n\
 	  fact := 1;\n\
 	  repeat\n\
@@ -28,15 +28,15 @@ void main(){
 	auto toks= get_tokens(testprog());
 	auto prog= match_stmt_sequence(toks.begin(), toks.end());
 	auto prog_code= genopt(prog);
-	map<string,int> global_const;
+	map<string,mid_code> global_const;
 	string tcd1= show_mid_code(prog_code);
 	auto const_opt_ed= const_opt(prog_code, global_const);
 	string tcd2= show_mid_code(const_opt_ed);
 	auto required_opt_ed= flip_unrequired_opt(const_opt_ed);
 	string tcd3= show_mid_code(required_opt_ed);
-	
+
 	auto end_time= timeGetTime();
 	cout<<tcd3<<endl;
-	cout<<"using time: "<<end_time-start_time<<endl;
+	cout<<"using time: "<<end_time-start_time<<" ms"<<endl;
 	system("pause");
 }
